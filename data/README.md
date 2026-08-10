@@ -27,4 +27,4 @@
 | `pipeline_10*.json` | 파이프라인 실행 결과 (3회 + 스모크 1회) |
 | `timing.json` · `score.json` · `clause_check.json` | 측정·채점 결과 |
 
-`golden_human.json` 은 **1인 1회**의 라벨이다. 정답의 표준이 아니라 *이 측정에서의 기준*이라는 뜻이다 — 한계는 최상위 README에 적어뒀다.
+`golden_human.json` 은 **1인 1회**의 라벨이다. 정답의 표준이 아니라 *이 측정에서만 쓰는 기준*이다. 한계는 최상위 README에 적어뒀다.
