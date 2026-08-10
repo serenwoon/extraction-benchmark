@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>측정 대시보드 — 문서 구조화 벤치마크</title>
+<style>
+:root{color-scheme:light;
+ --surface-1:#fcfcfb; --plane:#f9f9f7; --text-primary:#0b0b0b; --text-secondary:#52514e;
+ --muted:#898781; --grid:#e1e0d9; --baseline:#c3c2b7; --series-1:#2a78d6; --critical:#d03b3b;
+ --border:rgba(11,11,11,.10);}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme=light])){color-scheme:dark;
+ --surface-1:#1a1a19; --plane:#0d0d0d; --text-primary:#fff; --text-secondary:#c3c2b7;
+ --muted:#898781; --grid:#2c2c2a; --baseline:#383835; --series-1:#3987e5; --critical:#d03b3b;
+ --border:rgba(255,255,255,.10);}}
+:root[data-theme=dark]{color-scheme:dark;
+ --surface-1:#1a1a19; --plane:#0d0d0d; --text-primary:#fff; --text-secondary:#c3c2b7;
+ --muted:#898781; --grid:#2c2c2a; --baseline:#383835; --series-1:#3987e5; --critical:#d03b3b;
+ --border:rgba(255,255,255,.10);}
+*{box-sizing:border-box} body{margin:0;background:var(--plane);color:var(--text-primary);
+ font:15px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;}
+.wrap{max-width:860px;margin:0 auto;padding:40px 20px 72px}
+h1{font-size:24px;margin:0 0 6px} .lede{color:var(--text-secondary);margin:0 0 28px}
+.lede code{font-size:.9em}
+section{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;
+ padding:20px 22px;margin:0 0 18px}
+h2{font-size:16px;margin:0 0 16px;display:flex;align-items:baseline;gap:10px}
+.qref{font-size:11px;color:var(--muted);font-weight:400;letter-spacing:.04em}
+.note{margin:16px 0 0;font-size:13.5px;color:var(--text-secondary)}
+.note b{color:var(--text-primary)}
+.sub{font-size:12px;color:var(--muted);margin:18px 0 6px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 18px}
+.tile{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.tk{font-size:12px;color:var(--muted)} .tv{font-size:26px;font-weight:600;margin:2px 0}
+.tn{font-size:11.5px;color:var(--text-secondary)}
+svg{display:block;overflow:visible}
+.bar{fill:var(--series-1)} .bar:hover{opacity:.82}
+text.lab{font-size:12.5px;fill:var(--text-secondary)}
+text.val{font-size:12.5px;fill:var(--text-primary);font-variant-numeric:tabular-nums}
+table{border-collapse:separate;border-spacing:2px;font-size:13px;width:100%}
+.heat th{font-weight:500;color:var(--text-secondary);font-size:12px;text-align:right;padding:4px 8px}
+.heat thead th{text-align:center}
+.heat td{text-align:center;padding:7px 4px;border-radius:4px;font-variant-numeric:tabular-nums}
+.scroll{overflow-x:auto}
+.grid th{text-align:left;font-weight:500;color:var(--muted);font-size:11.5px;
+ padding:4px 8px;border-bottom:1px solid var(--grid);white-space:nowrap}
+.grid td{padding:6px 8px;border-bottom:1px solid var(--grid);font-variant-numeric:tabular-nums;
+ white-space:nowrap;color:var(--text-secondary)}
+.grid td:nth-child(2){white-space:normal;color:var(--text-primary)}
+.grid td.flag{color:var(--critical);font-weight:600}
+footer{color:var(--muted);font-size:12.5px;margin-top:28px;line-height:1.8}
+a{color:var(--series-1)}
+</style></head><body><div class="wrap">
+<h1>측정 대시보드 — 문서 구조화 벤치마크</h1>
+<p class="lede">공개 법령 문서에서 항목을 뽑아 구조화 표로 만드는 작업을, 사람과 파이프라인으로 나눠 잰 결과.
+전부 <code>data/benchmark.db</code>에 대한 SQL 한 벌에서 나왔고 쿼리는 <code>sql/analysis.sql</code>에 있다.</p>
+<div class="tiles"><div class="tile"><div class="tk">대상 항목</div><div class="tv">176</div><div class="tn">본칙 조문 (부칙 제외)</div></div><div class="tile"><div class="tk">건당 소요 — 사람</div><div class="tv">60초</div><div class="tn">10분 0초 / 10건</div></div><div class="tile"><div class="tk">건당 소요 — 파이프라인</div><div class="tv">8.6초</div><div class="tn">순차 환산 · 7.0배</div></div><div class="tile"><div class="tk">분류 일치</div><div class="tv">7~8/10</div><div class="tn">3회 실행</div></div></div>
+<section><h2>실행별 일치율<span class="qref">Q1 · Q3</span></h2><div class="chart"><svg viewBox="0 0 560 128" width="100%" height="128" role="img" aria-label="실행별 일치 건수"><text x="0" y="17.0" class="lab">run1</text><rect x="140" y="4" width="211.2" height="18" rx="4" class="bar"><title>run1: 7/10 · 평균 8.7초</title></rect><text x="359.2" y="17.0" class="val">7/10  평균 8.7초</text><text x="0" y="51.0" class="lab">run_r2</text><rect x="140" y="38" width="211.2" height="18" rx="4" class="bar"><title>run_r2: 7/10 · 평균 8.3초</title></rect><text x="359.2" y="51.0" class="val">7/10  평균 8.3초</text><text x="0" y="85.0" class="lab">run_r3</text><rect x="140" y="72" width="241.4" height="18" rx="4" class="bar"><title>run_r3: 8/10 · 평균 8.8초</title></rect><text x="389.4" y="85.0" class="val">8/10  평균 8.8초</text><text x="0" y="119.0" class="lab">다수결 3회</text><rect x="140" y="106" width="211.2" height="18" rx="4" class="bar"><title>다수결 3회: 7/10 · D-14 적용</title></rect><text x="359.2" y="119.0" class="val">7/10  D-14 적용</text></svg></div><p class="note"><b>다수결을 적용해도 일치율은 오르지 않았다.</b> 표가 갈린 항목이 1건뿐이고, 그 1건에서 다수결이 고른 답이 사람과 달랐기 때문이다. 반복 실행이 주는 것은 <b>정확도가 아니라 재현성</b>이다 — 단발 실행에서 흔들림을 판단 차이로 오해하는 일을 막아준다.</p></section>
+<section><h2>혼동 행렬<span class="qref">Q4</span></h2><div class="chart"><table class="heat"><thead><tr><th>사람 \ 기계</th><th>의무</th><th>금지</th><th>권한절차</th><th>정의목적</th><th>제재</th></tr></thead><tbody><tr><th>권한절차</th><td style="background:#eef4fd;color:var(--text-primary)">0</td><td style="background:#eef4fd;color:var(--text-primary)">0</td><td style="background:#256abf;color:#fff">15</td><td style="background:#eef4fd;color:var(--text-primary)">0</td><td style="background:#eef4fd;color:var(--text-primary)">0</td></tr><tr><th>금지</th><td style="background:#eef4fd;color:var(--text-primary)">0</td><td style="background:#eef4fd;color:var(--text-primary)">0</td><td style="background:#9ec5f4;color:var(--text-primary)">3</td><td style="background:#eef4fd;color:var(--text-primary)">0</td><td style="background:#eef4fd;color:var(--text-primary)">0</td></tr><tr><th>의무</th><td style="background:#6da7ec;color:var(--text-primary)">7</td><td style="background:#eef4fd;color:var(--text-primary)">0</td><td style="background:#cde2fb;color:var(--text-primary)">2</td><td style="background:#eef4fd;color:var(--text-primary)">0</td><td style="background:#eef4fd;color:var(--text-primary)">0</td></tr><tr><th>제재</th><td style="background:#eef4fd;color:var(--text-primary)">0</td><td style="background:#eef4fd;color:var(--text-primary)">0</td><td style="background:#9ec5f4;color:var(--text-primary)">3</td><td style="background:#eef4fd;color:var(--text-primary)">0</td><td style="background:#eef4fd;color:var(--text-primary)">0</td></tr></tbody></table></div><p class="note"><b>오류가 한 방향으로만 난다.</b> 사람이 무엇이라 했든 기계는 <code>권한절차</code>로 몰았다 — 금지 3/3, 제재 3/3이 전부 그리로 갔다. 무작위 오류가 아니라 <b>판정 규칙이 절차 쪽으로 기울어 있다는 신호</b>이고, 규칙을 고쳐야 잡힌다.</p></section>
+<section><h2>단서는 요약에서 사라진다<span class="qref">Q5</span></h2><div class="chart"><svg viewBox="0 0 560 94" width="100%" height="94" role="img" aria-label="단서를 가진 항목 수"><text x="0" y="17.0" class="lab">괄호 포함(느슨)</text><rect x="140" y="4" width="111.4" height="18" rx="4" class="bar"><title>괄호 포함(느슨): 59/176 · 34%</title></rect><text x="259.4" y="17.0" class="val">59/176  34%</text><text x="0" y="51.0" class="lab">괄호 제거(기준)</text><rect x="140" y="38" width="94.4" height="18" rx="4" class="bar"><title>괄호 제거(기준): 50/176 · 28%</title></rect><text x="242.4" y="51.0" class="val">50/176  28%</text><text x="0" y="85.0" class="lab">「다만,」만(보수)</text><rect x="140" y="72" width="88.8" height="18" rx="4" class="bar"><title>「다만,」만(보수): 47/176 · 27%</title></rect><text x="236.8" y="85.0" class="val">47/176  27%</text></svg><div class="sub">요약이 그 단서를 반영한 비율</div><svg viewBox="0 0 560 94" width="100%" height="94" role="img" aria-label="단서 반영 건수"><text x="0" y="17.0" class="lab">사람</text><rect x="140" y="4" width="2.0" height="18" rx="4" class="bar"><title>사람: 0건 · 0/4</title></rect><text x="150.0" y="17.0" class="val">0건  0/4</text><text x="0" y="51.0" class="lab">파이프라인(최대)</text><rect x="140" y="38" width="88.6" height="18" rx="4" class="bar"><title>파이프라인(최대): 1건 · 1/4</title></rect><text x="236.6" y="51.0" class="val">1건  1/4</text><text x="0" y="85.0" class="lab">기계 스캔</text><rect x="140" y="72" width="354.2" height="18" rx="4" class="bar"><title>기계 스캔: 4건 · 4/4</title></rect><text x="502.2" y="85.0" class="val">4건  4/4</text></svg></div><p class="note">판정 기준을 바꿔도 <b>27~34% 안에 있다.</b> 그런데 요약이 그걸 살려낸 비율은 사람도 기계도 바닥이다. <b>더 나은 요약기가 답이 아니다</b> — 40자 안에 본문과 단서를 다 담는 건 형식의 한계다. 요약 옆에 <b>단서 칸을 따로</b> 둔다.</p></section>
+<section><h2>위험 항목을 대리지표로 뽑을 수 있나 — 아니다<span class="qref">Q7</span></h2><div class="chart"><div class="scroll"><table class="grid"><thead><tr><th>id</th><th>명칭</th><th>흔들림</th><th>길이초과</th><th>단서</th><th>위험점수</th><th>실제결과</th></tr></thead><tbody><tr><td>RTA-003</td><td>신호기 등의 설치 및 관리</td><td>1</td><td>1</td><td>1</td><td>3</td><td></td></tr><tr><td>RTA-013-2</td><td>자전거의 통행방법의 특례</td><td>0</td><td>1</td><td>1</td><td>2</td><td></td></tr><tr><td>RTA-014</td><td>차로의 설치 등</td><td>0</td><td>1</td><td>1</td><td>2</td><td></td></tr><tr><td>RTA-163</td><td>통고처분</td><td>0</td><td>1</td><td>1</td><td>2</td><td class="flag">불일치</td></tr><tr><td>RTA-004-2</td><td>무인 교통단속용 장비의 설치 및 관리</td><td>0</td><td>1</td><td>0</td><td>1</td><td></td></tr><tr><td>RTA-026</td><td>교통정리가 없는 교차로에서의 양보운전</td><td>0</td><td>1</td><td>0</td><td>1</td><td></td></tr><tr><td>RTA-097</td><td>자동차등의 운전 금지</td><td>0</td><td>1</td><td>0</td><td>1</td><td class="flag">불일치</td></tr><tr><td>RTA-109</td><td>강사 등에 대한 연수교육 등</td><td>0</td><td>1</td><td>0</td><td>1</td><td></td></tr><tr><td>RTA-144</td><td>교통안전수칙과 교통안전에 관한 교육지침의 제정 등</td><td>1</td><td>0</td><td>0</td><td>1</td><td class="flag">불일치</td></tr><tr><td>RTA-146</td><td>무사고 또는 유공운전자의 표시장</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td></tr></tbody></table></div></div><p class="note">모델 흔들림 · 요지 길이 초과 · 단서 유무를 더해 <b>위험점수</b>를 만들어봤다. <b>실제 불일치와 안 맞는다</b> — 3점짜리는 일치했고, 불일치 3건은 2·1·1점이다. 즉 <b>확신도는 대리지표로 때울 수 없고 사람에게 직접 물어야 한다.</b> 이 표는 실패한 가설의 기록이고, 그래서 남긴다.</p></section>
+<footer>
+표본은 10건이다. 통계적 유의성을 주장하지 않는다 — “대략 몇 배”까지가 이 표본이 말할 수 있는 전부다.<br>
+골든셋은 1인 1회의 라벨이다. 정답의 표준이 아니라 <b>이 측정에서의 기준</b>이라는 뜻이다.<br>
+재현: <code>python sql/load.py &amp;&amp; python sql/build_dashboard.py</code>
+</footer>
+</div></body></html>

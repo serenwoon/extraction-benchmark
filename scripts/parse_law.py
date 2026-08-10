@@ -12,6 +12,9 @@ import sys
 
 ART_RE = re.compile(r"^제(\d+)조(?:의(\d+))?\s*\(([^)]{1,60})\)", re.M)
 
+# 부칙 절의 시작. 목차에도 "부칙"이 나오므로 `[편집]` 이 붙은 실제 절 머리로 판정한다.
+SUPPL_RE = re.compile(r"^\s*부\s*칙\s*\n\s*\[편집\]", re.M)
+
 
 def to_text(raw_html: str) -> str:
     m = re.search(r'(?is)<div class="mw-parser-output">(.*?)<!--\s*NewPP', raw_html) or re.search(
@@ -48,9 +51,35 @@ def parse(text: str):
 
 def main():
     src, dst = sys.argv[1], sys.argv[2]
-    arts = parse(to_text(open(src, encoding="utf-8").read()))
-    # 본문이 사실상 비어 있는 항목(삭제된 조문 등)은 제외한다
-    arts = [a for a in arts if a["chars"] >= 40]
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
+
+    text = to_text(open(src, encoding="utf-8").read())
+
+    # 🔴 부칙을 잘라낸다.
+    #   부칙은 조 번호가 1부터 다시 시작한다(시행일·경과조치). 본칙과 같이 세면
+    #   "제3조"가 여러 개가 되고, 조문 수도 부풀어 오른다.
+    m = SUPPL_RE.search(text)
+    if m:
+        dropped = len(parse(text[m.start():]))
+        text = text[:m.start()]
+        print(f"부칙 {dropped}개 조문 제외 (조 번호가 1부터 다시 시작한다)")
+    else:
+        print("⚠ 부칙 절을 못 찾았다. 본칙만인지 확인할 것.")
+
+    arts = [a for a in parse(text) if a["chars"] >= 40]
+
+    # 같은 조가 개정 전·후 판본으로 두 번 실린 경우가 있다. 마지막(최신)을 쓴다.
+    # 조용히 버리지 않고 무엇을 버렸는지 찍는다.
+    seen = {}
+    for a in arts:
+        if a["id"] in seen:
+            print(f"  중복 {a['id']} ({a['title']}) — {seen[a['id']]['chars']}자 버리고 {a['chars']}자 채택")
+        seen[a["id"]] = a
+    arts = list(seen.values())
+
     json.dump(arts, open(dst, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(f"{len(arts)}개 조문 -> {dst}")
 

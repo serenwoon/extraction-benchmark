@@ -3,3 +3,6 @@ denylist.local.txt
 
 __pycache__/
 *.pyc
+
+# 파생물 — sql/load.py 로 언제든 다시 만든다
+data/benchmark.db
