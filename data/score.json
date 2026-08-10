@@ -1,0 +1,25 @@
+{
+ "per_run_hits": {
+  "run": 7,
+  "run_r2": 7,
+  "run_r3": 8
+ },
+ "stable_disagreements": [
+  [
+   "RTA-097",
+   "금지",
+   "권한절차"
+  ],
+  [
+   "RTA-163",
+   "제재",
+   "권한절차"
+  ]
+ ],
+ "unstable_items": [
+  "RTA-003",
+  "RTA-144"
+ ],
+ "wall_mean": 20.533333333333335,
+ "seq_mean": 85.93333333333334
+}
