@@ -71,7 +71,8 @@ def bars(rows, maxv, unit="", width=560, note=None):
 
 def heat(cols, rows, maxv):
     """혼동 행렬. 순차 단일 색조(파랑) light→dark, 숫자를 항상 같이 적는다."""
-    out = ['<table class="heat"><thead><tr><th>사람 \\ 기계</th>']
+    # 역슬래시를 쓰면 한글 폰트가 원화 기호(₩)로 그린다. 화살표로 둔다.
+    out = ['<table class="heat"><thead><tr><th>사람 ↓ · 기계 →</th>']
     out += [f"<th>{esc(c)}</th>" for c in cols[1:]]
     out.append("</tr></thead><tbody>")
     for r in rows:
